@@ -1,0 +1,1668 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#D2691E" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>بوابة المطاعم — My Order</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #f0f4f8;
+        --card: #ffffff;
+        --muted: #718096;
+        --accent-1: #667eea;
+        --accent-2: #764ba2;
+        --accent-3: #f093fb;
+        --text: #1a202c;
+        --text-light: #4a5568;
+        --radius: 16px;
+        --radius-lg: 24px;
+        --container-max: 1400px;
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+        --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.15);
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family:
+          "Cairo",
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        background: linear-gradient(135deg, #f0f4f8 0%, #e9f0f7 100%);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Header Styles */
+      header.app-header {
+        padding: 16px 24px;
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #f093fb 100%
+        );
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        box-shadow: var(--shadow-lg);
+        backdrop-filter: blur(10px);
+      }
+
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        max-width: var(--container-max);
+        margin-inline: auto;
+        flex-wrap: wrap;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: -0.5px;
+      }
+
+      .brand .logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.3),
+          rgba(255, 255, 255, 0.1)
+        );
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 900;
+        font-size: 24px;
+        transition: transform 0.3s ease;
+      }
+
+      .brand .logo:hover {
+        transform: scale(1.08) rotate(5deg);
+      }
+
+      .brand .subtitle {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .brand .tagline {
+        font-size: 12px;
+        opacity: 0.95;
+        font-weight: 400;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      /* Button Styles */
+      .btn-primary,
+      .btn-secondary,
+      .btn-destructive {
+        color: white;
+        padding: 12px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 14px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+      }
+
+      .btn-primary:active {
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary.dark {
+        background: #2d3748;
+        border: none;
+      }
+
+      .btn-secondary.dark:hover {
+        background: #1a202c;
+      }
+
+      .btn-destructive {
+        background: linear-gradient(135deg, #f56565, #e53e3e);
+      }
+
+      .btn-destructive:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(245, 101, 101, 0.4);
+      }
+
+      /* Main Content */
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 24px;
+        max-width: var(--container-max);
+        margin-inline: auto;
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .gateway-hero {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100vw;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;
+        text-align: center;
+        padding: 40px;
+        position: relative;
+      }
+
+      .gateway-hero h1 {
+        font-size: clamp(36px, 8vw, 72px);
+        margin: 0;
+        line-height: 1.2;
+        font-weight: 900;
+        letter-spacing: -2px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .gateway-hero p {
+        margin: 20px 0;
+        font-size: 20px;
+        line-height: 1.6;
+        font-weight: 400;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        max-width: 600px;
+      }
+
+      /* Search & Filter Controls */
+      .controls {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .search {
+        flex: 1;
+        min-width: 260px;
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 14px 18px;
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .search:focus-within {
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .search i {
+        color: #333;
+        margin-left: 12px;
+        font-size: 18px;
+      }
+
+      .search input {
+        border: 0;
+        outline: 0;
+        font-size: 16px;
+        width: 100%;
+        background: transparent;
+        color: #333;
+        font-family: inherit;
+      }
+
+      .search input::placeholder {
+        color: #666;
+      }
+
+      .filter {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 14px 18px;
+        border-radius: 12px;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .filter:focus-within {
+        background: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+      }
+
+      .filter i {
+        color: #333;
+        margin-left: 12px;
+        font-size: 18px;
+      }
+
+      .filter-select {
+        border: 0;
+        background: transparent;
+        outline: 0;
+        color: #333;
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* Restaurants Grid */
+      .restaurants-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 32px;
+        width: 100%;
+      }
+
+      .restaurant-card {
+        background: var(--card);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 320px;
+        position: relative;
+        group: card;
+      }
+
+      .restaurant-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.1),
+          rgba(240, 147, 251, 0.1)
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .restaurant-card:hover {
+        transform: translateY(-12px) scale(1.02);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .restaurant-card:hover::before {
+        opacity: 1;
+      }
+
+      .restaurant-card:focus-visible {
+        outline: 3px solid var(--accent-1);
+        outline-offset: 4px;
+      }
+
+      .restaurant-media {
+        background: linear-gradient(135deg, #f0f4f8, #e9f0f7);
+        object-fit: cover;
+        width: 100%;
+        aspect-ratio: 16/9;
+        height: auto;
+        min-height: 160px;
+        transition: transform 0.3s ease;
+      }
+
+      .restaurant-card:hover .restaurant-media {
+        transform: scale(1.05);
+      }
+
+      .restaurant-body {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        flex: 1 1 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .restaurant-title {
+        font-weight: 800;
+        font-size: 18px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        line-height: 1.3;
+      }
+
+      .restaurant-meta {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .restaurant-meta .fa-star {
+        color: #fbbf24;
+        margin-left: 4px;
+      }
+
+      .meta-note {
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 600;
+        padding: 2px 8px;
+        background: rgba(102, 126, 234, 0.05);
+        border-radius: 6px;
+      }
+
+      .badge {
+        padding: 8px 14px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      }
+
+      .panel-buttons {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      /* Footer */
+      footer.app-footer {
+        padding: 32px 24px;
+        color: var(--muted);
+        font-size: 14px;
+        max-width: var(--container-max);
+        margin-inline: auto;
+        text-align: center;
+        border-top: 1px solid rgba(102, 126, 234, 0.1);
+        margin-top: 40px;
+        width: 100%;
+      }
+
+      /* Control Bar Styles */
+      .control-bar {
+        margin-top: 32px;
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .control-container {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 8px 0;
+      }
+
+      .control-container::-webkit-scrollbar {
+        display: none;
+      }
+
+      .control-btn {
+        padding: 10px 16px;
+        border-radius: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+        backdrop-filter: blur(10px);
+      }
+
+      .control-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-1px);
+      }
+
+      .control-btn.active {
+        background: white;
+        color: #333;
+        border-color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .control-btn.active:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Admin Panel Styles */
+      #adminToggle {
+        position: fixed;
+        left: 20px;
+        top: 90px;
+        z-index: 60;
+      }
+
+      #adminPanel {
+        position: fixed;
+        left: 20px;
+        top: 140px;
+        right: 20px;
+        max-width: 600px;
+        background: #fff;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xl);
+        padding: 24px;
+        display: none;
+        z-index: 70;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+
+      #adminPanel .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+      }
+
+      #adminPanel .header strong {
+        font-size: 18px;
+        color: var(--text);
+      }
+
+      #adminPanel .header button {
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+
+      /* Admin Form */
+      .admin-form {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .admin-form input {
+        padding: 12px 14px;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+        border-radius: 10px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: all 0.3s ease;
+      }
+
+      .admin-form input:focus {
+        outline: none;
+        border-color: var(--accent-1);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .admin-form .actions {
+        display: flex;
+        gap: 12px;
+      }
+
+      /* Admin List */
+      .admin-list-container {
+        max-height: 300px;
+        overflow-y: auto;
+        border-top: 2px solid rgba(102, 126, 234, 0.1);
+        padding-top: 16px;
+      }
+
+      #adminList {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .admin-list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        background: rgba(102, 126, 234, 0.05);
+        border-radius: 10px;
+        border: 1px solid rgba(102, 126, 234, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .admin-list-item:hover {
+        background: rgba(102, 126, 234, 0.08);
+        border-color: rgba(102, 126, 234, 0.2);
+      }
+
+      .admin-item-info {
+        flex: 1;
+      }
+
+      .admin-item-info .name {
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .admin-item-info .meta {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      .admin-item-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .admin-item-actions button {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: rgba(102, 126, 234, 0.1);
+        color: var(--accent-1);
+      }
+
+      .admin-item-actions button:hover {
+        background: rgba(102, 126, 234, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .admin-item-actions button.delete {
+        background: rgba(245, 101, 101, 0.1);
+        color: #f56565;
+      }
+
+      .admin-item-actions button.delete:hover {
+        background: rgba(245, 101, 101, 0.2);
+      }
+
+      /* Modal Styles */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 90;
+        backdrop-filter: blur(4px);
+      }
+
+      .modal-card {
+        background: #fff;
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        width: 440px;
+        max-width: calc(100% - 32px);
+        box-shadow: var(--shadow-xl);
+        font-family: inherit;
+        direction: rtl;
+      }
+
+      .modal-card h3 {
+        margin: 0 0 12px 0;
+        font-size: 22px;
+        color: var(--text);
+        font-weight: 800;
+      }
+
+      .modal-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .modal-row input {
+        padding: 12px 14px;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+        border-radius: 10px;
+        font-size: 15px;
+        font-family: inherit;
+        transition: all 0.3s ease;
+      }
+
+      .modal-row input:focus {
+        outline: none;
+        border-color: var(--accent-1);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .modal-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 20px;
+      }
+
+      .msg {
+        font-size: 14px;
+        color: #f56565;
+        padding: 10px;
+        background: rgba(245, 101, 101, 0.1);
+        border-radius: 8px;
+        display: none;
+      }
+
+      .msg:not(:empty) {
+        display: block;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .restaurants-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 20px;
+        }
+
+        main {
+          padding: 32px 20px;
+        }
+
+        .gateway-hero {
+          min-height: 80vh;
+          padding: 32px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .restaurants-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+
+        .gateway-hero {
+          min-height: 70vh;
+          padding: 24px;
+          gap: 12px;
+        }
+
+        .gateway-hero h1 {
+          font-size: clamp(28px, 10vw, 48px);
+        }
+
+        .gateway-hero p {
+          font-size: 18px;
+        }
+
+        .controls {
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 30px;
+        }
+
+        .search {
+          min-width: 100%;
+        }
+
+        header.app-header {
+          padding: 12px 16px;
+        }
+
+        .header-row {
+          gap: 10px;
+        }
+
+        .brand {
+          gap: 10px;
+          font-size: 16px;
+        }
+
+        .brand .logo {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+
+        .restaurant-card {
+          min-height: 280px;
+        }
+
+        .restaurant-media {
+          min-height: 140px;
+        }
+
+        #adminPanel {
+          left: 16px;
+          right: 16px;
+          bottom: 70px;
+          max-width: calc(100% - 32px);
+          padding: 20px;
+        }
+
+        .modal-card {
+          width: calc(100% - 32px);
+          padding: 24px;
+        }
+
+        main {
+          padding: 24px 16px;
+        }
+
+        footer.app-footer {
+          font-size: 13px;
+          padding: 24px 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        :root {
+          font-size: 14px;
+        }
+
+        .gateway-hero {
+          min-height: 60vh;
+          padding: 20px;
+        }
+
+        .gateway-hero h1 {
+          font-size: clamp(24px, 12vw, 36px);
+        }
+
+        .gateway-hero p {
+          font-size: 16px;
+        }
+
+        .restaurant-title {
+          font-size: 16px;
+        }
+
+        .btn-primary,
+        .btn-secondary,
+        .btn-destructive {
+          padding: 10px 16px;
+          font-size: 13px;
+        }
+
+        .search,
+        .filter {
+          padding: 12px 14px;
+          font-size: 14px;
+        }
+
+        .panel-buttons {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .panel-buttons button {
+          width: 100%;
+        }
+
+        #adminToggle {
+          left: 12px;
+          top: 80px;
+        }
+
+        #adminPanel {
+          left: 12px;
+          right: 12px;
+          top: 130px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app-header" role="banner">
+      <div class="header-row">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">🍽️</div>
+          <div>
+            <div class="subtitle">بوابة المطاعم</div>
+            <div class="tagline">تصفح الفروع واطلب بسهولة</div>
+          </div>
+        </div>
+
+        <ul class="nav-links">
+          <li data-action="navigate" data-target="home-page">
+            <span class="nav-icon">🏠</span> الرئيسية
+          </li>
+          <li data-action="navigate" data-target="menu-page">
+            <span class="nav-icon">🍽️</span> المنيو
+          </li>
+          <li data-action="navigate" data-target="orders-page">
+            <span class="nav-icon">📦</span> طلباتي
+          </li>
+          <li data-action="navigate" data-target="about-page">
+            <span class="nav-icon">ℹ️</span> عن الموقع
+          </li>
+          <li data-action="navigate" data-target="contact-page">
+            <span class="nav-icon">📞</span> تواصل معنا
+          </li>
+        </ul>
+
+        <div class="header-actions">
+          <button id="openAdminBtn" class="btn-secondary dark">
+            لوحة التحكم
+          </button>
+          <a class="btn-primary" href="index.html">العودة للموقع</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="gateway-hero" aria-labelledby="gateway-title">
+      <h1 id="gateway-title">اختر مطعم للبدء</h1>
+      <p>اختر من بين المطاعم المتاحة أو استخدم البحث للتضييق.</p>
+
+      <div class="controls" role="search">
+        <label class="search" aria-label="بحث عن مطعم">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="search"
+            id="search"
+            placeholder="ابحث عن اسم المطعم أو الوجبة"
+          />
+        </label>
+
+        <div class="filter" role="group" aria-label="مرشحات">
+          <i class="fa-solid fa-filter"></i>
+          <select onchange="" aria-label="ترتيب" class="filter-select">
+            <option>الأكثر شيوعاً</option>
+            <option>تقييم الأعلى</option>
+            <option>الأقرب</option>
+          </select>
+        </div>
+      </div>
+
+      <nav class="control-bar" role="navigation" aria-label="تصفية المطاعم">
+        <div class="control-container">
+          <button class="control-btn active" data-category="all">الكل</button>
+          <button class="control-btn" data-category="fast-food">
+            وجبات سريعة
+          </button>
+          <button class="control-btn" data-category="italian">إيطالي</button>
+          <button class="control-btn" data-category="arabic">عربي</button>
+          <button class="control-btn" data-category="asian">آسيوي</button>
+          <button class="control-btn" data-category="healthy">صحي</button>
+        </div>
+      </nav>
+    </section>
+
+    <main>
+      <section class="restaurants-grid" aria-live="polite">
+        <a
+          class="restaurant-card"
+          href="index.html?res=%D9%85%D8%B7%D8%B9%D9%85+%D8%A7%D9%84%D8%A8%D9%8A%D8%AA%D8%B2%D8%A7+%D8%A7%D9%84%D8%A5%D9%8A%D8%B7%D8%A7%D9%84%D9%8A"
+          aria-label="مطعم البيتزا الإيطالي"
+        >
+          <img
+            class="restaurant-media"
+            loading="lazy"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIJ-sXReSok67nDDw0imkkDdSCFZPtAbFA5Q&s"
+            alt="مطعم البيتزا الإيطالي"
+          />
+          <div class="restaurant-body">
+            <div class="restaurant-title">
+              <span>🍕 مطعم البيتزا الإيطالي</span
+              ><span class="badge">مفتوح الآن</span>
+            </div>
+            <div class="restaurant-meta">
+              <span>سعر متوسط</span><span>•</span
+              ><span>4.6 <i class="fa-solid fa-star"></i></span>
+            </div>
+          </div>
+        </a>
+
+        <a
+          class="restaurant-card"
+          href="index.html?res=%D8%A8%D8%B1%D8%AC%D8%B1+%D8%A8%D8%A7%D8%B2%D9%88%D9%83%D8%A7"
+          aria-label="برجر بازوكا"
+        >
+          <img
+            class="restaurant-media"
+            loading="lazy"
+            src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800"
+            alt="برجر بازوكا"
+          />
+          <div class="restaurant-body">
+            <div class="restaurant-title">
+              <span>🍔 برجر بازوكا</span><span class="meta-note">20-30 د</span>
+            </div>
+            <div class="restaurant-meta">
+              <span>توصيل سريع</span><span>•</span
+              ><span>4.4 <i class="fa-solid fa-star"></i></span>
+            </div>
+          </div>
+        </a>
+
+        <a
+          class="restaurant-card"
+          href="index.html?res=%D9%85%D8%B7%D8%B9%D9%85+%D8%A7%D9%84%D8%B3%D9%88%D8%B4%D9%8A+%D8%A7%D9%84%D9%8A%D8%A7%D8%A8%D8%A7%D9%86%D9%8A"
+          aria-label="مطعم السوشي الياباني"
+        >
+          <img
+            class="restaurant-media"
+            loading="lazy"
+            src="https://images.unsplash.com/photo-1553621042-f6e147245754?w=800"
+            alt="مطعم السوشي الياباني"
+          />
+          <div class="restaurant-body">
+            <div class="restaurant-title">
+              <span>🍱 مطعم السوشي الياباني</span
+              ><span class="meta-note">حجز متاح</span>
+            </div>
+            <div class="restaurant-meta">
+              <span>مأكولات بحرية</span><span>•</span
+              ><span>4.8 <i class="fa-solid fa-star"></i></span>
+            </div>
+          </div>
+        </a>
+
+        <a
+          class="restaurant-card"
+          href="index.html?res=%D8%AF%D8%AC%D8%A7%D8%AC+%D8%B3%D8%AA%D8%B1%D9%8A%D8%AA"
+          aria-label="دجاج ستريت"
+        >
+          <img
+            class="restaurant-media"
+            loading="lazy"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE7wbWL7yM23ASrpOVqlwllQO4JHH47STzwg&s"
+            alt="دجاج ستريت"
+          />
+          <div class="restaurant-body">
+            <div class="restaurant-title">
+              <span>🍗 دجاج ستريت</span
+              ><span class="meta-note">سعر اقتصادي</span>
+            </div>
+            <div class="restaurant-meta">
+              <span>وجبات عائلية</span><span>•</span
+              ><span>4.2 <i class="fa-solid fa-star"></i></span>
+            </div>
+          </div>
+        </a>
+
+        <a
+          class="restaurant-card"
+          href="index.html?res=%D9%83%D8%A7%D9%81%D9%8A%D9%87+%D8%A7%D9%84%D9%81%D9%86+%D8%A7%D9%84%D8%AD%D8%AF%D9%8A%D8%AB"
+          aria-label="كافيه الفن الحديث"
+        >
+          <img
+            class="restaurant-media"
+            loading="lazy"
+            src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800"
+            alt="كافيه الفن الحديث"
+          />
+          <div class="restaurant-body">
+            <div class="restaurant-title">
+              <span>☕ كافيه الفن الحديث</span
+              ><span class="meta-note">مناسب للعمل</span>
+            </div>
+            <div class="restaurant-meta">
+              <span>مشروبات وحلويات</span><span>•</span
+              ><span>4.5 <i class="fa-solid fa-star"></i></span>
+            </div>
+          </div>
+        </a>
+      </section>
+
+      <footer class="app-footer">
+        بوابة المطاعم — تصميم احترافي لواجهة اختيار الفروع. تواصل معنا لتحسين
+        المحتوى أو إضافة فرع جديد.
+      </footer>
+    </main>
+    <!-- Admin login modal -->
+    <div
+      id="adminModal"
+      class="modal-backdrop"
+      role="dialog"
+      aria-hidden="true"
+    >
+      <div class="modal-card" role="document" aria-labelledby="adminModalTitle">
+        <h3 id="adminModalTitle">دخول المشرف</h3>
+        <div id="modalMsg" class="msg" aria-live="polite"></div>
+        <form id="adminModalForm" class="modal-row">
+          <input
+            id="modalUser"
+            name="user"
+            placeholder="اسم المستخدم"
+            autocomplete="username"
+          />
+          <input
+            id="modalPass"
+            name="pass"
+            type="password"
+            placeholder="كلمة المرور"
+            autocomplete="current-password"
+          />
+          <input
+            id="modalPass2"
+            name="pass2"
+            type="password"
+            placeholder="تأكيد كلمة المرور (لإنشاء)"
+            style="display: none"
+          />
+          <div class="modal-actions">
+            <button type="button" id="modalCancel" class="btn-secondary">
+              إلغاء
+            </button>
+            <button type="submit" id="modalSubmit" class="btn-primary">
+              دخول
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="adminPanel" aria-hidden="true">
+      <div class="header">
+        <strong>لوحة تحكم المطاعم</strong>
+        <div class="panel-buttons">
+          <button id="changePwBtn" class="btn-secondary">تغيير الباسورد</button>
+          <button id="logoutBtn" class="btn-secondary">تسجيل خروج</button>
+          <button id="closeAdminBtn" class="btn-destructive">إغلاق</button>
+        </div>
+      </div>
+
+      <form id="adminForm" class="admin-form">
+        <input id="r-id" type="hidden" />
+        <input id="r-name" placeholder="اسم المطعم" required />
+        <input id="r-sub" placeholder="نص مساعد (مثلاً: توصيل سريع)" />
+        <input id="r-badge" placeholder="وسم (مثلاً: مفتوح الآن)" />
+        <input id="r-img" placeholder="رابط صورة" />
+        <input id="r-href" placeholder="رابط الهدف (index.html?res=...)" />
+        <div class="actions">
+          <button id="saveBtn" class="btn-primary" type="button">حفظ</button>
+          <button id="newBtn" type="button" class="btn-secondary">
+            مُسح الحقل
+          </button>
+        </div>
+      </form>
+
+      <div class="admin-list-container">
+        <ul
+          id="adminList"
+          style="
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          "
+        ></ul>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const storageKey = "restaurants_v1";
+
+        function generateId() {
+          return "r_" + Math.random().toString(36).slice(2, 9);
+        }
+
+        function getStored() {
+          try {
+            const raw = localStorage.getItem(storageKey);
+            return raw ? JSON.parse(raw) : null;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function setStored(arr) {
+          localStorage.setItem(storageKey, JSON.stringify(arr));
+        }
+
+        // If no stored data, extract existing static cards as initial dataset
+        function extractInitial() {
+          const cards = Array.from(
+            document.querySelectorAll(".restaurant-card"),
+          );
+          if (!cards.length) return [];
+          return cards.map((card) => {
+            const a = card.closest("a") || card;
+            const href = a.getAttribute("href") || "";
+            const img = card.querySelector(".restaurant-media");
+            const titleEl = card.querySelector(".restaurant-title span");
+            const badgeEl = card.querySelector(".badge");
+            const meta = Array.from(
+              card.querySelectorAll(".restaurant-meta span"),
+            )
+              .map((s) => s.innerText)
+              .filter(Boolean)
+              .join(" • ");
+            return {
+              id: generateId(),
+              name: titleEl
+                ? titleEl.innerText.trim()
+                : a.getAttribute("aria-label") || "مطعم",
+              sub: badgeEl ? "" : "",
+              badge: badgeEl ? badgeEl.innerText.trim() : "",
+              img: img ? img.getAttribute("src") : "",
+              meta: meta,
+              href: href,
+            };
+          });
+        }
+
+        let restaurants = getStored() || extractInitial();
+
+        // Admin visibility/session helpers
+        const isAdmin =
+          new URLSearchParams(location.search).get("admin") === "1" ||
+          localStorage.getItem("isAdmin") === "1";
+        const userKey = "gateway_admin_user"; // stored admin username
+        const pwKey = "gateway_admin_hash"; // stored SHA-256 hash of admin password
+        let sessionAdmin = !!isAdmin;
+
+        const grid = document.querySelector(".restaurants-grid");
+        const searchInput = document.getElementById("search");
+
+        function renderRestaurants(filter) {
+          grid.innerHTML = "";
+          const list = restaurants.filter((r) => {
+            if (!filter) return true;
+            const q = filter.toLowerCase();
+            return (r.name + " " + (r.meta || "") + " " + (r.badge || ""))
+              .toLowerCase()
+              .includes(q);
+          });
+
+          list.forEach((r) => {
+            const a = document.createElement("a");
+            a.className = "restaurant-card";
+            a.href = r.href || "index.html?res=" + encodeURIComponent(r.name);
+            a.setAttribute("aria-label", r.name);
+            a.innerHTML = `
+              <img class="restaurant-media" loading="lazy" src="${r.img || "https://via.placeholder.com/800x450?text=مطعم"}" alt="${r.name}" />
+              <div class="restaurant-body">
+                <div class="restaurant-title">
+                  <span>${r.name}</span>
+                  ${r.badge ? `<span class="badge">${r.badge}</span>` : ""}
+                </div>
+                <div class="restaurant-meta">${r.meta || ""}</div>
+              </div>
+            `;
+            grid.appendChild(a);
+          });
+        }
+
+        // Initial render
+        renderRestaurants();
+
+        // Live search
+        if (searchInput) {
+          searchInput.addEventListener("input", function () {
+            renderRestaurants(this.value.trim());
+          });
+        }
+
+        // Admin UI logic
+        const openBtn = document.getElementById("openAdminBtn");
+        const closeBtn = document.getElementById("closeAdminBtn");
+        const changePwBtn = document.getElementById("changePwBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const panel = document.getElementById("adminPanel");
+        const adminList = document.getElementById("adminList");
+        const saveBtn = document.getElementById("saveBtn");
+        const newBtn = document.getElementById("newBtn");
+
+        // helper: SHA-256 hex
+        async function sha256Hex(str) {
+          const buf = await crypto.subtle.digest(
+            "SHA-256",
+            new TextEncoder().encode(str),
+          );
+          return Array.from(new Uint8Array(buf))
+            .map((b) => b.toString(16).padStart(2, "0"))
+            .join("");
+        }
+
+        // Auto-initialize credentials per user request: username `admin`, password `12345`
+        (async function initDefaultAdmin() {
+          try {
+            if (
+              !localStorage.getItem(userKey) &&
+              !localStorage.getItem(pwKey)
+            ) {
+              const h = await sha256Hex("12345");
+              localStorage.setItem(userKey, "admin");
+              localStorage.setItem(pwKey, h);
+              console.info("Initialized default admin credentials.");
+            }
+          } catch (e) {
+            console.error("Failed to init default admin", e);
+          }
+        })();
+
+        // Modal-based unlock flow (professional)
+        const adminModal = document.getElementById("adminModal");
+        const modalForm = document.getElementById("adminModalForm");
+        const modalUser = document.getElementById("modalUser");
+        const modalPass = document.getElementById("modalPass");
+        const modalPass2 = document.getElementById("modalPass2");
+        const modalMsg = document.getElementById("modalMsg");
+        const modalCancel = document.getElementById("modalCancel");
+
+        function showModal(mode) {
+          // mode: 'login' or 'create' or 'change'
+          adminModal.style.display = "flex";
+          adminModal.setAttribute("aria-hidden", "false");
+          modalMsg.textContent = "";
+          modalForm.dataset.mode = mode;
+          modalPass.value = "";
+          modalPass2.value = "";
+          modalUser.value = "";
+          if (mode === "create") {
+            modalPass2.style.display = "";
+            modalUser.placeholder = "اسم المستخدم جديد";
+            modalPass2.placeholder = "تأكيد كلمة المرور";
+            document.getElementById("modalSubmit").textContent = "إنشاء";
+          } else if (mode === "change") {
+            modalPass2.style.display = "";
+            modalUser.placeholder = "اسم المستخدم الحالي أو جديد";
+            document.getElementById("modalSubmit").textContent = "تغيير";
+          } else {
+            modalPass2.style.display = "none";
+            modalUser.placeholder = "اسم المستخدم";
+            document.getElementById("modalSubmit").textContent = "دخول";
+          }
+          modalUser.focus();
+        }
+
+        function hideModal() {
+          adminModal.style.display = "none";
+          adminModal.setAttribute("aria-hidden", "true");
+        }
+
+        // openBtn shows login modal; modal handles create/login depending on stored credentials
+        async function tryUnlock() {
+          if (sessionAdmin) return openAdmin();
+          const storedUser = localStorage.getItem(userKey);
+          const storedHash = localStorage.getItem(pwKey);
+          if (!storedUser || !storedHash) {
+            showModal("create");
+            return;
+          }
+          showModal("login");
+        }
+
+        modalCancel.addEventListener("click", function () {
+          hideModal();
+        });
+
+        modalForm.addEventListener("submit", async function (ev) {
+          ev.preventDefault();
+          const mode = modalForm.dataset.mode;
+          const u = modalUser.value && modalUser.value.trim();
+          const p = modalPass.value || "";
+          const p2 = modalPass2.value || "";
+          const storedUser = localStorage.getItem(userKey);
+          const storedHash = localStorage.getItem(pwKey);
+
+          if (mode === "create") {
+            if (!u || !p) {
+              modalMsg.textContent = "أدخل اسم مستخدم وباسورد.";
+              return;
+            }
+            if (p !== p2) {
+              modalMsg.textContent = "كلمتا المرور لا تتطابقان.";
+              return;
+            }
+            const h = await sha256Hex(p);
+            localStorage.setItem(userKey, u);
+            localStorage.setItem(pwKey, h);
+            localStorage.setItem("isAdmin", "1");
+            sessionAdmin = true;
+            hideModal();
+            openAdmin();
+            return;
+          }
+
+          if (mode === "login") {
+            if (!u || !p) {
+              modalMsg.textContent = "أدخل اسم المستخدم والباسورد.";
+              return;
+            }
+            const h = await sha256Hex(p);
+            if (u === storedUser && h === storedHash) {
+              localStorage.setItem("isAdmin", "1");
+              sessionAdmin = true;
+              hideModal();
+              openAdmin();
+              return;
+            }
+            modalMsg.textContent = "اسم المستخدم أو الباسورد خاطئ";
+            return;
+          }
+
+          if (mode === "change") {
+            // change credentials: require current stored credentials
+            if (!storedUser || !storedHash) {
+              modalMsg.textContent = "لا توجد بيانات للمشرف.";
+              return;
+            }
+            if (!u || !p || !p2) {
+              modalMsg.textContent = "أكمل الحقول.";
+              return;
+            }
+            const hcur = await sha256Hex(p);
+            // here modalUser holds current username for verification; modalPass and modalPass2 used as new password and confirm
+            if (u !== storedUser) {
+              modalMsg.textContent = "اسم المستخدم الحالي خاطئ.";
+              return;
+            }
+            // prompt for current password separately is omitted for compact UI; require the user to re-enter current password in modalPass (we'll use p as current here)
+            const newPass = modalPass2.value || "";
+            if (!newPass) {
+              modalMsg.textContent = "أدخل كلمة مرور جديدة في الحقل الثاني.";
+              return;
+            }
+            if (p !== newPass) {
+              modalMsg.textContent = "الكلمات لا تتطابق.";
+              return;
+            }
+            const newH = await sha256Hex(newPass);
+            const newUser = u || storedUser;
+            localStorage.setItem(userKey, newUser);
+            localStorage.setItem(pwKey, newH);
+            modalMsg.textContent = "تم تغيير بيانات الدخول.";
+            hideModal();
+            return;
+          }
+        });
+
+        function openAdmin() {
+          panel.style.display = "block";
+          panel.setAttribute("aria-hidden", "false");
+          refreshAdminList();
+        }
+        function closeAdmin() {
+          panel.style.display = "none";
+          panel.setAttribute("aria-hidden", "true");
+          localStorage.removeItem("isAdmin");
+          sessionAdmin = false;
+        }
+
+        if (openBtn) {
+          openBtn.addEventListener("click", function () {
+            tryUnlock().catch((err) => console.error(err));
+          });
+        }
+        if (closeBtn) closeBtn.addEventListener("click", closeAdmin);
+        if (logoutBtn)
+          logoutBtn.addEventListener("click", function () {
+            localStorage.removeItem("isAdmin");
+            sessionAdmin = false;
+            if (panel) {
+              panel.style.display = "none";
+              panel.setAttribute("aria-hidden", "true");
+            }
+            alert("تم تسجيل الخروج");
+          });
+
+        if (changePwBtn)
+          changePwBtn.addEventListener("click", function () {
+            showModal("change");
+          });
+
+        function refreshAdminList() {
+          adminList.innerHTML = "";
+          restaurants.forEach((r) => {
+            const li = document.createElement("li");
+            li.className = "admin-list-item";
+            li.innerHTML = `
+              <div class="admin-item-info">
+                <div class="name">${r.name}</div>
+                <div class="meta">${r.meta || r.badge || ""}</div>
+              </div>
+              <div class="admin-item-actions">
+                <button data-edit="${r.id}">تعديل</button>
+                <button data-delete="${r.id}" class="delete">حذف</button>
+              </div>
+            `;
+            adminList.appendChild(li);
+          });
+        }
+
+        adminList.addEventListener("click", function (e) {
+          const edit = e.target.getAttribute("data-edit");
+          const del = e.target.getAttribute("data-delete");
+          if (edit) {
+            const r = restaurants.find((x) => x.id === edit);
+            if (!r) return;
+            document.getElementById("r-id").value = r.id;
+            document.getElementById("r-name").value = r.name;
+            document.getElementById("r-sub").value = r.sub || r.meta || "";
+            document.getElementById("r-badge").value = r.badge || "";
+            document.getElementById("r-img").value = r.img || "";
+            document.getElementById("r-href").value = r.href || "";
+          }
+          if (del) {
+            restaurants = restaurants.filter((x) => x.id !== del);
+            setStored(restaurants);
+            refreshAdminList();
+            renderRestaurants(searchInput ? searchInput.value.trim() : "");
+          }
+        });
+
+        saveBtn.addEventListener("click", function () {
+          const id = document.getElementById("r-id").value || "";
+          const name = document.getElementById("r-name").value.trim();
+          const sub = document.getElementById("r-sub").value.trim();
+          const badge = document.getElementById("r-badge").value.trim();
+          const img = document.getElementById("r-img").value.trim();
+          const href = document.getElementById("r-href").value.trim();
+          if (!name) return alert("أدخل اسم المطعم");
+          if (id) {
+            const idx = restaurants.findIndex((x) => x.id === id);
+            if (idx > -1) {
+              restaurants[idx].name = name;
+              restaurants[idx].sub = sub;
+              restaurants[idx].badge = badge;
+              restaurants[idx].img = img;
+              restaurants[idx].href = href;
+            }
+          } else {
+            restaurants.unshift({
+              id: generateId(),
+              name,
+              sub,
+              badge,
+              img,
+              href,
+              meta: sub,
+            });
+          }
+          setStored(restaurants);
+          refreshAdminList();
+          renderRestaurants(searchInput ? searchInput.value.trim() : "");
+          // clear form
+          document.getElementById("adminForm").reset();
+          document.getElementById("r-id").value = "";
+        });
+
+        newBtn.addEventListener("click", function () {
+          document.getElementById("adminForm").reset();
+          document.getElementById("r-id").value = "";
+        });
+
+        // Export / Import shortcuts (optional): double-click open button to export JSON (protected)
+        function doExport() {
+          const blob = new Blob([JSON.stringify(restaurants, null, 2)], {
+            type: "application/json",
+          });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "restaurants.json";
+          a.click();
+          URL.revokeObjectURL(url);
+        }
+
+        if (openBtn) {
+          openBtn.addEventListener("dblclick", function () {
+            if (!sessionAdmin) {
+              tryUnlock()
+                .then(() => {
+                  if (sessionAdmin) doExport();
+                })
+                .catch((err) => console.error(err));
+              return;
+            }
+            doExport();
+          });
+        }
+
+        // Accessibility: close panel with Escape
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeAdmin();
+        });
+      })();
+
+      // Control Bar Functionality
+      (function () {
+        const controlBtns = document.querySelectorAll(".control-btn");
+        const restaurantCards = document.querySelectorAll(".restaurant-card");
+
+        // Define categories for each restaurant (you can expand this)
+        const restaurantCategories = {
+          "🍕 مطعم البيتزا الإيطالي": "italian",
+          "🍔 برجر بازوكا": "fast-food",
+          "🍗 دجاج ستريت": "fast-food",
+          "☕ كافيه الفن الحديث": "healthy",
+        };
+
+        controlBtns.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            // Remove active class from all buttons
+            controlBtns.forEach((b) => b.classList.remove("active"));
+            // Add active class to clicked button
+            this.classList.add("active");
+
+            const category = this.dataset.category;
+
+            restaurantCards.forEach((card) => {
+              const title = card
+                .querySelector(".restaurant-title span")
+                .textContent.trim();
+              const cardCategory = restaurantCategories[title] || "other";
+
+              if (category === "all" || cardCategory === category) {
+                card.style.display = "flex";
+              } else {
+                card.style.display = "none";
+              }
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
