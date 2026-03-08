@@ -213,7 +213,7 @@ header.scrolled {
     left: 0;
     width: 0;
     height: 3px;
-    background: linear-gradient(90deg, #D2691E, #FF8E5F);
+    background: linear-gradient(90deg, #FF6B35, #FF8E5F);
     transition: width 0.35s ease;
     border-radius: 2px;
 }
@@ -257,7 +257,7 @@ header.scrolled {
     position: absolute;
     top: -10px;
     right: -10px;
-    background: linear-gradient(135deg, #D2691E, #FF8E5F);
+    background: linear-gradient(135deg, #FF6B35, #FF8E5F);
     color: white;
     font-size: 12px;
     font-weight: 800;
@@ -531,7 +531,7 @@ header.scrolled {
 
 .hero-content h1 span {
     /* keep a subtle gradient on the brand name if desired */
-    background: linear-gradient(135deg, #D2691E, #FF8E5F);
+    background: linear-gradient(135deg, #FF6B35, #FF8E5F);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -720,7 +720,7 @@ header.scrolled {
     border: none !important;
     border-radius: 50px !important;
     cursor: pointer !important;
-    background: linear-gradient(135deg, #D2691E, #FF8E5F) !important;
+    background: linear-gradient(135deg, #FF6B35, #FF8E5F) !important;
     color: white !important;
     transition: var(--transition) !important;
     margin-top: 8px !important;
@@ -862,7 +862,7 @@ input:focus, textarea:focus, select:focus {
 }
 
 .total-box {
-    background: linear-gradient(135deg, #D2691E 0%, #FF8E5F 50%, #FFB347 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8E5F 50%, #FFB347 100%);
     padding: 28px 20px;
     border-radius: 16px;
     text-align: center;
